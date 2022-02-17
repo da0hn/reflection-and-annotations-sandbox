@@ -1,6 +1,6 @@
 package org.gabriel.reflection;
 
-class AnyEntity {
+public class AnyEntity {
 
   public String type;
   private int val;
