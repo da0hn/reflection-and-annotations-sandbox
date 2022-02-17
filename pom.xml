@@ -12,6 +12,7 @@
         <module>reflections</module>
         <module>annotations</module>
         <module>reflection-and-annotations-together</module>
+        <module>rene-orm</module>
     </modules>
 
     <properties>
