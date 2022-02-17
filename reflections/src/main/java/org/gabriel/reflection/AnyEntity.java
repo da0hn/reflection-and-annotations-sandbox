@@ -5,7 +5,11 @@ class AnyEntity {
   public String type;
   private int val;
 
-  AnyEntity(final int val, final String type) {
+  private AnyEntity() {
+    this(0, "id");
+  }
+
+  public AnyEntity(final int val, final String type) {
     this.val = val;
     this.type = type;
   }
