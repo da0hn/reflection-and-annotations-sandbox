@@ -14,7 +14,7 @@ class AnyEntity {
     return this.val;
   }
 
-  public void setVal(final int val) {
+  private void setVal(final int val) {
     this.val = val;
   }
 

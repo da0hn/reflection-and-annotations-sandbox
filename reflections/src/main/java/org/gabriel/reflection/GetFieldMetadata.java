@@ -1,5 +1,9 @@
 package org.gabriel.reflection;
 
+import static org.gabriel.reflection.DebugUtil.after;
+import static org.gabriel.reflection.DebugUtil.before;
+import static org.gabriel.reflection.DebugUtil.separator;
+
 class GetFieldMetadata {
 
   public static void main(final String[] args) throws NoSuchFieldException, IllegalAccessException {
@@ -14,24 +18,21 @@ class GetFieldMetadata {
 
     separator();
 
-    System.out.println("Before: " + entity);
+    before(entity);
     final var field = aClass.getField("type");
     field.set(entity, "rollNo.");
-    System.out.println("After: " + entity);
+    after(entity);
 
     separator();
 
-    System.out.println("Before: " + entity);
+    before(entity);
     // Field field = aClass.getField("val") -> runtime error, "val" is private
     final var field2 = aClass.getDeclaredField("val");
     field2.setAccessible(true); // runtime error if field has modifiers and not accessible
     field2.set(entity, 19);
-    System.out.println("After: " + entity);
+    after(entity);
   }
 
-  private static void separator() {
-    System.out.println("-".repeat(40));
-  }
 
   private static void printPublicFields(final Class<? extends AnyEntity> aClass) {
     final var fields = aClass.getFields();
