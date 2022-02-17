@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>reflections</module>
+        <module>annotations</module>
     </modules>
 
     <properties>
