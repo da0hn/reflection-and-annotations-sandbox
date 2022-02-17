@@ -11,6 +11,7 @@
     <modules>
         <module>reflections</module>
         <module>annotations</module>
+        <module>reflection-and-annotations-together</module>
     </modules>
 
     <properties>
