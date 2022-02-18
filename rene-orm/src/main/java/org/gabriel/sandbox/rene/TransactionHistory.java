@@ -1,11 +1,19 @@
 package org.gabriel.sandbox.rene;
 
+import org.gabriel.sandbox.rene.annotations.Column;
+import org.gabriel.sandbox.rene.annotations.PrimaryKey;
+
 public class TransactionHistory {
 
+  @PrimaryKey
   private Long transactionId;
+  @Column
   private Integer accountNumber;
+  @Column
   private String name;
+  @Column
   private String transactionType;
+  @Column
   private Double amount;
 
   public TransactionHistory() {

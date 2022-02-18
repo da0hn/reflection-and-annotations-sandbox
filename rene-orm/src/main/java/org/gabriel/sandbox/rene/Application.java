@@ -1,9 +1,19 @@
 package org.gabriel.sandbox.rene;
 
+import java.sql.SQLException;
+
 public class Application {
 
-  public static void main(final String... args) {
+  public static void main(final String... args) throws SQLException {
 
+    final var transaction1 = new TransactionHistory(15331, "Gabriel 1", "Credit", 1_0000d);
+    final var transaction2 = new TransactionHistory(15342, "Gabriel 2", "Debit", 500.00);
+    final var transaction4 = new TransactionHistory(15353, "Gabriel 4", "Debit", 275.50);
+    final var transaction3 = new TransactionHistory(15364, "Gabriel 3", "Credit", 125_000.00);
+
+    final ReneOrm<TransactionHistory> reneOrm = ReneOrm.getConnection();
+
+    reneOrm.write(transaction1);
   }
 
 }
