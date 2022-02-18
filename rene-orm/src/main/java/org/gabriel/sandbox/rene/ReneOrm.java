@@ -1,12 +1,15 @@
 package org.gabriel.sandbox.rene;
 
 import org.gabriel.sandbox.rene.annotations.PrimaryKey;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class ReneOrm<T> {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ReneOrm.class);
 
   private final Connection connection;
 
@@ -24,11 +27,18 @@ public class ReneOrm<T> {
     final var fields = aClass.getDeclaredFields();
     for(final var field : fields) {
       if(field.isAnnotationPresent(PrimaryKey.class)) {
-        System.out.println("The primary key is: " + field.getName());
+        LOGGER.info("Found primary key '{}'", field.getName());
       }
       else {
-        System.out.println("Found column: " + field.getName());
+        LOGGER.info("Found column '{}'", field.getName());
       }
     }
+
+    final String insertStatement = """
+                                   INSERT INTO %s (%s) VALUES (%s)
+                                   """.formatted(aClass.getSimpleName(), "", "");
+
+    LOGGER.info("Generated insert statement: {}", insertStatement);
+
   }
 }
