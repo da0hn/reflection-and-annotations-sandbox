@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ReneOrm<T> {
 
@@ -35,7 +36,6 @@ public class ReneOrm<T> {
     final Class<?> aClass = entity.getClass();
 
     final var columns = this.getColumns(aClass);
-    final var pkColumn = this.getPrimaryKey(aClass);
 
     final String formattedName = this.getTableName(aClass);
 
@@ -43,18 +43,40 @@ public class ReneOrm<T> {
       .map(this::getColumnName)
       .collect(Collectors.joining(", "));
 
-    final var joinedColumnValue = columns.stream().map(this::getColumnValue).collect(Collectors.joining(", "));
+    //    final var joinedColumnValue = columns.stream()
+    //      .map(field -> this.getColumnValue(field, entity))
+    //      .collect(Collectors.joining(", "));
+
+    final var columnsPlaceholder = IntStream.range(0, columns.size() + 1)
+      .mapToObj(column -> "?")
+      .collect(Collectors.joining(", "));
+
+    final var pkColumn = this.getPrimaryKey(aClass);
 
     final String insertStatement = """
-                                   INSERT INTO %s (%s) VALUES (%s)
-                                   """.formatted(formattedName, joinedColumnName, joinedColumnValue);
+                                   INSERT INTO %s (%s, %s) VALUES (%s)
+                                   """.formatted(formattedName, pkColumn.getName(), joinedColumnName, columnsPlaceholder);
 
     LOGGER.info(insertStatement);
 
   }
 
-  private String getColumnValue(final Field field) {
-    return null;
+  private String getColumnValue(final Field field, final T entity) {
+    try {
+      field.setAccessible(true);
+      final var value = field.get(entity);
+      final Class<?> type = field.getType();
+
+      return switch(type.getSimpleName()) {
+        case "String" -> String.format("'%s'", value.toString());
+        case "Integer", "Long", "Float", "Double" -> value.toString();
+        default -> throw new IllegalStateException();
+      };
+    }
+    catch(final IllegalAccessException e) {
+      LOGGER.error(e.getMessage());
+      throw new IllegalStateException();
+    }
   }
 
   private String getColumnName(final Field field) {
