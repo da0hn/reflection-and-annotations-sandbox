@@ -1,8 +1,10 @@
-package org.gabriel.sandbox.rene;
+package org.gabriel.sandbox.rene.model;
 
 import org.gabriel.sandbox.rene.annotations.Column;
 import org.gabriel.sandbox.rene.annotations.PrimaryKey;
+import org.gabriel.sandbox.rene.annotations.Table;
 
+@Table(name = "transaction_history")
 public class TransactionHistory {
 
   @PrimaryKey

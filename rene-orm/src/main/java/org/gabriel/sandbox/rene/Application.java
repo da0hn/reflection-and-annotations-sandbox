@@ -1,5 +1,8 @@
 package org.gabriel.sandbox.rene;
 
+import org.gabriel.sandbox.rene.model.TransactionHistory;
+import org.gabriel.sandbox.rene.orm.ReneOrm;
+
 import java.sql.SQLException;
 
 public class Application {
