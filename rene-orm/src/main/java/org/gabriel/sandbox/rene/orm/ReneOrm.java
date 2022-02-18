@@ -47,9 +47,7 @@ public class ReneOrm<T> {
     //      .map(field -> this.getColumnValue(field, entity))
     //      .collect(Collectors.joining(", "));
 
-    final var columnsPlaceholder = IntStream.range(0, columns.size() + 1)
-      .mapToObj(column -> "?")
-      .collect(Collectors.joining(", "));
+    final var columnsPlaceholder = this.getColumnValueAsPlaceholder(columns.size());
 
     final var pkColumn = this.getPrimaryKey(aClass);
 
@@ -61,22 +59,10 @@ public class ReneOrm<T> {
 
   }
 
-  private String getColumnValue(final Field field, final T entity) {
-    try {
-      field.setAccessible(true);
-      final var value = field.get(entity);
-      final Class<?> type = field.getType();
-
-      return switch(type.getSimpleName()) {
-        case "String" -> String.format("'%s'", value.toString());
-        case "Integer", "Long", "Float", "Double" -> value.toString();
-        default -> throw new IllegalStateException();
-      };
-    }
-    catch(final IllegalAccessException e) {
-      LOGGER.error(e.getMessage());
-      throw new IllegalStateException();
-    }
+  private String getColumnValueAsPlaceholder(final int numberOfColumns) {
+    return IntStream.range(0, numberOfColumns + 1)
+      .mapToObj(column -> "?")
+      .collect(Collectors.joining(", "));
   }
 
   private String getColumnName(final Field field) {
@@ -113,5 +99,23 @@ public class ReneOrm<T> {
       .peek(pk -> LOGGER.info("Found primary key '{}'", pk.getName()))
       .findFirst()
       .orElseThrow();
+  }
+
+  private String getColumnValue(final Field field, final T entity) {
+    try {
+      field.setAccessible(true);
+      final var value = field.get(entity);
+      final Class<?> type = field.getType();
+
+      return switch(type.getSimpleName()) {
+        case "String" -> String.format("'%s'", value.toString());
+        case "Integer", "Long", "Float", "Double" -> value.toString();
+        default -> throw new IllegalStateException();
+      };
+    }
+    catch(final IllegalAccessException e) {
+      LOGGER.error(e.getMessage());
+      throw new IllegalStateException();
+    }
   }
 }
