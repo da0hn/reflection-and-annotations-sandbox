@@ -3,7 +3,7 @@
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout
-                    pattern="[%t] %highlight{%-5level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green} %style{%d{dd-MM-yyyy HH:mm:ss.SSS}}{yellow} %logger{36} - %msg%n"/>
+                    pattern="[%highlight{%-5level}{FATAL=bg_red, ERROR=red, WARN=yellow, INFO=green}] %style{%d{dd-MM-yyyy HH:mm:ss.SSS}}{yellow} %c{1}.%M() - %msg%n"/>
         </Console>
         <File name="MyFile" fileName="all.log" immediateFlush="false" append="false">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
