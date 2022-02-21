@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicLong;
 class Insert<T> implements ReneInsertOperation<T> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class);
-  private final AtomicLong idCounter = new AtomicLong(0L);
+  private static final AtomicLong idCounter = new AtomicLong(0L);
   private final Connection connection;
 
   Insert(final Connection connection) {
@@ -66,7 +66,7 @@ class Insert<T> implements ReneInsertOperation<T> {
     final PreparedStatement preparedStatement
   ) {
     try {
-      preparedStatement.setLong(1, this.idCounter.getAndIncrement());
+      preparedStatement.setLong(1, idCounter.getAndIncrement());
     }
     catch(final SQLException | IllegalArgumentException e) {
       LOGGER.error(e.getMessage());
