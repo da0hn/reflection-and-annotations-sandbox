@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class Application {
 
-  public static void main(final String... args) throws SQLException {
+  public static void main(final String... args) throws SQLException, IllegalAccessException {
 
     final var transaction1 = new TransactionHistory(15331, "Gabriel 1", "Credit", 1_0000d);
     final var transaction2 = new TransactionHistory(15342, "Gabriel 2", "Debit", 500.00);
