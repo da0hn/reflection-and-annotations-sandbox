@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -28,19 +29,23 @@ public class ReneOrm<T> {
   private static final Map<Class<?>, Value> valueStatementMap = new HashMap<>();
 
   static {
-    valueStatementMap.put(int.class, Value.INTEGER);
+    valueStatementMap.put(Integer.class, Value.INTEGER);
     valueStatementMap.put(String.class, Value.STRING);
-    valueStatementMap.put(double.class, Value.DOUBLE);
-    valueStatementMap.put(long.class, Value.LONG);
-    valueStatementMap.put(float.class, Value.FLOAT);
+    valueStatementMap.put(Double.class, Value.DOUBLE);
+    valueStatementMap.put(Long.class, Value.LONG);
+    valueStatementMap.put(Float.class, Value.FLOAT);
   }
 
   private final Connection connection;
   private final AtomicLong idCounter = new AtomicLong(0L);
 
   private ReneOrm() throws SQLException {
-    //    this.connection = DriverManager.getConnection("");
-    this.connection = null;
+    LOGGER.info("Opening connection");
+    this.connection = DriverManager.getConnection(
+      "jdbc:h2:~/external_hd/code/reflection-and-annotations-sandbox/rene-orm/h2_database/any_database",
+      "sa",
+      ""
+    );
   }
 
   public static <T> ReneOrm<T> getConnection() throws SQLException {
@@ -80,7 +85,9 @@ public class ReneOrm<T> {
       statementApplier.apply(preparedStatement, new ColumnValue<>(index++, column.get(entity)));
     }
 
-    LOGGER.info(insertStatement);
+    LOGGER.info("Statement created {}", insertStatement);
+    final var updateCount = preparedStatement.executeUpdate();
+    LOGGER.info("Statement executed, update count: {}", updateCount);
   }
 
   private String joinColumnNameSeparatedByComma(final Collection<Field> columns) {
@@ -145,6 +152,11 @@ public class ReneOrm<T> {
       .peek(pk -> LOGGER.info("Found primary key '{}'", pk.getName()))
       .findFirst()
       .orElseThrow();
+  }
+
+  public void closeConnection() throws SQLException {
+    LOGGER.info("Closing connection");
+    this.connection.close();
   }
 
   private enum Value {

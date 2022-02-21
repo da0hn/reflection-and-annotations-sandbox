@@ -17,6 +17,11 @@ public class Application {
     final ReneOrm<TransactionHistory> reneOrm = ReneOrm.getConnection();
 
     reneOrm.write(transaction1);
+    reneOrm.write(transaction2);
+    reneOrm.write(transaction3);
+    reneOrm.write(transaction4);
+
+    reneOrm.closeConnection();
   }
 
 }
