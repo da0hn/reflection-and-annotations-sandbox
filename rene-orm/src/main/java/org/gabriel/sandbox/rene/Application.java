@@ -14,12 +14,12 @@ public class Application {
     final var transaction4 = new TransactionHistory(15353, "Gabriel 4", "Debit", 275.50);
     final var transaction3 = new TransactionHistory(15364, "Gabriel 3", "Credit", 125_000.00);
 
-    final ReneOrm<TransactionHistory> reneOrm = ReneOrm.getConnection();
+    final ReneOrm<TransactionHistory> reneOrm = ReneOrm.create();
 
-    reneOrm.write(transaction1);
-    reneOrm.write(transaction2);
-    reneOrm.write(transaction3);
-    reneOrm.write(transaction4);
+    reneOrm.insert(transaction1);
+    reneOrm.insert(transaction2);
+    reneOrm.insert(transaction3);
+    reneOrm.insert(transaction4);
 
     reneOrm.closeConnection();
   }
