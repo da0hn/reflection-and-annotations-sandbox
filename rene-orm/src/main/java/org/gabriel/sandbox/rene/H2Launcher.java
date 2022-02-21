@@ -8,7 +8,7 @@ import java.sql.SQLException;
 public class H2Launcher {
   public static void main(final String[] args) throws SQLException, ClassNotFoundException {
     //createDatabase();
-    Server.main("-ifNotExists");
+    Server.main("-ifNotExists", "-web");
   }
 
   private static void createDatabase() throws ClassNotFoundException, SQLException {
