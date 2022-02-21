@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ReneOrm<T> implements ReneOperations<T>, ReneConnection {
 
@@ -43,6 +44,14 @@ public class ReneOrm<T> implements ReneOperations<T>, ReneConnection {
     final ReneInsertOperation<T> insert = new Insert<>(this.connection);
     insert.execute(entity);
     LOGGER.info("End insertion");
+  }
+
+  @Override public Optional<T> getById(final Long id, final Class<T> aClass) {
+    LOGGER.info("Begin get by id of {}", aClass.getSimpleName());
+    final ReneGetByIdOperation<T> getById = new GetById<>(this.connection);
+    final var entity = getById.execute(aClass, id);
+    LOGGER.info("End get by id");
+    return entity;
   }
 
   @Override

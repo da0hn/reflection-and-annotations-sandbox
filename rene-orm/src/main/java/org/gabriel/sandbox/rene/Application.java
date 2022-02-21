@@ -16,12 +16,22 @@ public class Application {
 
     final ReneOrm<TransactionHistory> reneOrm = ReneOrm.create();
 
-    reneOrm.insert(transaction1);
-    reneOrm.insert(transaction2);
-    reneOrm.insert(transaction3);
-    reneOrm.insert(transaction4);
+    //    reneOrm.insert(transaction1);
+    //    reneOrm.insert(transaction2);
+    //    reneOrm.insert(transaction3);
+    //    reneOrm.insert(transaction4);
+
+    final var maybeEntity = reneOrm.getById(1L, TransactionHistory.class);
+
+    maybeEntity.ifPresentOrElse(
+      System.out::println,
+      Application::entityNotFound
+    );
 
     reneOrm.closeConnection();
   }
 
+  private static void entityNotFound() {
+    throw new IllegalStateException("Entity not found");
+  }
 }
