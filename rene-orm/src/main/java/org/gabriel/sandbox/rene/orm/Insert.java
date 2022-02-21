@@ -33,7 +33,7 @@ class Insert<T> implements ReneInsertOperation<T> {
 
     final var preparedStatement = this.connection.prepareStatement(insertStatement);
 
-    this.applyIdValueInStatement(preparedStatement);
+    Insert.applyIdValueInStatement(preparedStatement);
 
     this.applyColumnValueInStatement(entity, columns, preparedStatement);
 
@@ -62,7 +62,7 @@ class Insert<T> implements ReneInsertOperation<T> {
       .toList();
   }
 
-  private void applyIdValueInStatement(
+  private static void applyIdValueInStatement(
     final PreparedStatement preparedStatement
   ) {
     try {

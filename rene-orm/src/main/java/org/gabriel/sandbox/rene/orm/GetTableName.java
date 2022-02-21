@@ -5,9 +5,9 @@ import org.gabriel.sandbox.rene.annotations.Table;
 import java.util.Locale;
 import java.util.Optional;
 
-public class GetTableName {
+class GetTableName {
 
-  public String execute(final Class<?> aClass) {
+  String execute(final Class<?> aClass) {
     final var tableName = Optional.ofNullable(aClass.getAnnotation(Table.class))
       .map(Table::name)
       .orElseThrow(IllegalStateException::new);
