@@ -40,8 +40,8 @@ public class ReneOrm<T> implements ReneOperations<T>, ReneConnection {
   @Override
   public void insert(final T entity) throws SQLException, IllegalAccessException {
     LOGGER.info("Begin insertion of {}", entity);
-    final ReneInsertOperation<T> insert = new Insert<>();
-    insert.execute(entity, this.connection);
+    final ReneInsertOperation<T> insert = new Insert<>(this.connection);
+    insert.execute(entity);
     LOGGER.info("End insertion");
   }
 

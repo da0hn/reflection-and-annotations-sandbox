@@ -16,9 +16,14 @@ class Insert<T> implements ReneInsertOperation<T> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class);
   private final AtomicLong idCounter = new AtomicLong(0L);
+  private final Connection connection;
+
+  Insert(final Connection connection) {
+    this.connection = connection;
+  }
 
   @Override
-  public void execute(final T entity, final Connection connection) throws SQLException, IllegalAccessException {
+  public void execute(final T entity) throws SQLException, IllegalAccessException {
 
     final Class<?> aClass = entity.getClass();
 
@@ -26,7 +31,7 @@ class Insert<T> implements ReneInsertOperation<T> {
 
     final String insertStatement = new InsertBuilderImpl(aClass, columns).build();
 
-    final var preparedStatement = connection.prepareStatement(insertStatement);
+    final var preparedStatement = this.connection.prepareStatement(insertStatement);
 
     this.applyIdValueInStatement(preparedStatement);
 
