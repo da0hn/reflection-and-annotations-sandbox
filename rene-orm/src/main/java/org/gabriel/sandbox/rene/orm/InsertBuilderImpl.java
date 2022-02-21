@@ -2,7 +2,6 @@ package org.gabriel.sandbox.rene.orm;
 
 import org.gabriel.sandbox.rene.annotations.Column;
 import org.gabriel.sandbox.rene.annotations.PrimaryKey;
-import org.gabriel.sandbox.rene.annotations.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,14 +61,7 @@ class InsertBuilderImpl implements InsertBuilder {
   }
 
   private String getTableName() {
-    final var tableName = Optional.ofNullable(this.aClass.getAnnotation(Table.class))
-      .map(Table::name)
-      .orElseThrow(IllegalStateException::new);
-
-    return StringUtil.requireNonEmptyOrElseGet(
-      tableName,
-      () -> this.aClass.getSimpleName().toLowerCase(Locale.ROOT)
-    );
+    return new GetTableName().execute(this.aClass);
   }
 
   private Field getPrimaryKey() {
