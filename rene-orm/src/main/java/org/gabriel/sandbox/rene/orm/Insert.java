@@ -46,7 +46,7 @@ class Insert<T> implements ReneInsertOperation<T> {
     for(final var column : columns) {
       column.setAccessible(true);
       final var statementApplier = ReneOrm.valueStatementMap.get(column.getType());
-      statementApplier.apply(preparedStatement, new ReneOrm.ColumnValue<>(index++, column.get(entity)));
+      statementApplier.apply(preparedStatement, new ColumnValue<>(index++, column.get(entity)));
     }
   }
 
@@ -68,4 +68,6 @@ class Insert<T> implements ReneInsertOperation<T> {
       throw new IllegalStateException();
     }
   }
+
+  record ColumnValue<VALUE>(int index, VALUE value) {}
 }
