@@ -67,4 +67,14 @@ public class TransactionHistory {
   public void setAmount(final Double amount) {
     this.amount = amount;
   }
+
+  @Override public String toString() {
+    return "TransactionHistory{" +
+           "transactionId=" + transactionId +
+           ", accountNumber=" + accountNumber +
+           ", name='" + name + '\'' +
+           ", transactionType='" + transactionType + '\'' +
+           ", amount=" + amount +
+           '}';
+  }
 }
